@@ -6,6 +6,10 @@ export POD_SUBNET=10.0.0.0/24
 export BIND_ADDRESS=$(hostname -i)
 export PUBLIC_IP=
 
+sed -i "s/POD_SUBNET/$POD_SUBNET/" config.yaml
+sed -i "s/BIND_ADDRESS/$BIND_ADDRESS/" config.yaml
+sed -i "s/PUBLIC_IP/$PUBLIC_IP/" config.yaml
+
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
 swapoff -a
 
@@ -55,11 +59,6 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 sudo systemctl daemon-reload
-
-curl -s https://gist.githubusercontent.com/dksx/526e5e7b4101af1a73bfb13ddb3fef18/raw/2b9303c7e27e1e0b3a7f77f2004be840402eb7aa/config.yaml > config.yaml
-sed -i "s/POD_SUBNET/$POD_SUBNET/" config.yaml
-sed -i "s/BIND_ADDRESS/$BIND_ADDRESS/" config.yaml
-sed -i "s/PUBLIC_IP/$PUBLIC_IP/" config.yaml
 
 
 sudo kubeadm init --config=config.yaml
