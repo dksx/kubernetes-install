@@ -4,9 +4,8 @@ export OS=xUbuntu_18.04
 export VERSION=1.20
 
 export BIND_ADDRESS=$(hostname -i)
-export PUBLIC_IP=
+export PUBLIC_IP=$(hostname -i) # Replace with the public ip in case remote administration is needed, e.g Lens
 
-sed -i "s/POD_SUBNET/$POD_SUBNET/" config.yaml
 sed -i "s/BIND_ADDRESS/$BIND_ADDRESS/" config.yaml
 sed -i "s/PUBLIC_IP/$PUBLIC_IP/" config.yaml
 
