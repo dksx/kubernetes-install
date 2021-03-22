@@ -2,7 +2,7 @@
 
 export OS=xUbuntu_18.04
 export VERSION=1.20
-export POD_SUBNET=10.0.0.0/24
+
 export BIND_ADDRESS=$(hostname -i)
 export PUBLIC_IP=
 
