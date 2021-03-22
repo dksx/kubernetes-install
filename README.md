@@ -1,2 +1,2 @@
 # kubernetes-install
-Kubeadm, kubelet, kubectl installation script
+Kubeadm, kubelet, kubectl & CRI-O installation script
