@@ -1,0 +1,19 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: BIND_ADDRESS
+  bindPort: 6443
+---
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: ClusterConfiguration
+apiServer:
+  certSANs:
+  - 127.0.0.1
+  - BIND_ADDRESS
+  - PUBLIC_IP
+networking:
+  podSubnet: POD_SUBNET
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd
