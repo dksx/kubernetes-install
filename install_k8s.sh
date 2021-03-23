@@ -3,14 +3,17 @@
 export OS=xUbuntu_18.04
 export VERSION=1.20
 
-export BIND_ADDRESS=$(hostname -i)
-export PUBLIC_IP=$(hostname -i) # Replace with the public ip in case remote administration is needed, e.g Lens
+export POD_SUBNET=10.0.0.0/24
+export BIND_ADDRESS=$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
+export PUBLIC_IP=$BIND_ADDRESS # Replace with the public ip in case remote administration is needed, e.g Lens
 
+SUBNET=$(echo ${POD_SUBNET} | sed -e "s#/#\\\/#g")
+sed -i "s/POD_SUBNET/$SUBNET/" config.yaml
 sed -i "s/BIND_ADDRESS/$BIND_ADDRESS/" config.yaml
 sed -i "s/PUBLIC_IP/$PUBLIC_IP/" config.yaml
 
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
-swapoff -a
+sudo swapoff -a
 
 sudo modprobe br_netfilter
 
@@ -35,6 +38,7 @@ net.bridge.bridge-nf-call-ip6tables = 1
 EOF
 
 sudo sysctl --system
+sudo apt-get install -y curl
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
 deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /
@@ -61,3 +65,7 @@ sudo systemctl daemon-reload
 
 
 sudo kubeadm init --config=config.yaml
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config

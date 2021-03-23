@@ -12,7 +12,7 @@ apiServer:
   - BIND_ADDRESS
   - PUBLIC_IP
 networking:
-  podSubnet: 10.0.0.0/24
+  podSubnet: POD_SUBNET
 ---
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
