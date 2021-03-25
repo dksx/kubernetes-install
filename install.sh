@@ -3,7 +3,7 @@
 export OS=xUbuntu_18.04
 export VERSION=1.20
 
-export POD_SUBNET=10.0.0.0/24
+export POD_SUBNET=192.168.0.0/16
 export BIND_ADDRESS=$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
 export PUBLIC_IP=$BIND_ADDRESS # Replace with the public ip in case remote administration is needed, e.g Lens
 
@@ -62,10 +62,3 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 sudo systemctl daemon-reload
-
-
-sudo kubeadm init --config=config.yaml
-
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
